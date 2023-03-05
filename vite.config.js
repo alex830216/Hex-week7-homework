@@ -12,7 +12,7 @@ export default defineConfig({
     })
   ],
   // github 資料夾
-  base: '/week6-deploy/',
+  // base: '/week6-deploy/',
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
