@@ -35,9 +35,24 @@
             </td>
           </template>
           <td>{{ order.total }}</td>
-          <td>
-            <span class="text-success" v-if="order.is_paid">已付款</span>
-            <span v-else>未付款</span>
+          <td class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="flexCheckDefault"
+              v-model="order.is_paid"
+              @change="updateOrder(order)"
+            />
+            <label class="form-check-label" for="flexCheckDefault">
+              <span
+                class="text-success"
+                v-if="order.is_paid">已付款
+              </span>
+              <span v-else>未付款</span>
+            </label>
+            <!-- <span class="text-success" v-if="order.is_paid">已付款</span>
+            <span v-else>未付款</span> -->
           </td>
           <td>
             <div class="btn-group">
@@ -54,7 +69,7 @@
     </table>
     <PaginationComponent
       :pages="page"
-      @change-page="getProducts">
+      @change-page="getOrders">
     </PaginationComponent>
     <!-- Modal -->
     <div id="orderModal" ref="orderModal" class="modal fade" tabindex="-1" aria-labelledby="orderModalLabel"
@@ -103,21 +118,20 @@ export default {
         .then((res) => {
           this.orders = res.data.orders
           this.page = res.data.pagination
-          console.log(this.orders)
         })
         .catch((err) => {
-          alert(err.data.message)
+          alert(err.response.data.message)
         })
     },
-    updateOrder () {
-      this.$http.put(`${VITE_URL}v2/api/${VITE_PATH}/admin/order/${this.tempOrder.id}`, { data: this.tempOrder })
+    updateOrder (order) {
+      this.$http.put(`${VITE_URL}v2/api/${VITE_PATH}/admin/order/${order.id}`, { data: order })
         .then((res) => {
           alert(res.data.message)
           this.getOrders()
           this.orderModal.hide()
         })
         .catch((err) => {
-          alert(err.data.message)
+          alert(err.response.data.message)
         })
     },
     delOrder () {
@@ -129,7 +143,7 @@ export default {
           this.delOrderModal.hide()
         })
         .catch((err) => {
-          alert(err.data.message)
+          alert(err.response.data.message)
         })
     },
     openModal (status, order) {

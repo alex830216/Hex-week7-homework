@@ -33,8 +33,7 @@ export default {
       this.$http
         .post(`${VITE_URL}v2/api/user/check`)
         .then(() => {})
-        .catch((err) => {
-          console.log(err)
+        .catch(() => {
           this.$router.push('/login')
         })
     }

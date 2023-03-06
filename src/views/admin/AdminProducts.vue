@@ -115,7 +115,7 @@ export default {
           this.page = res.data.pagination
         })
         .catch((err) => {
-          alert(err.data.message)
+          alert(err.response.data.message)
         })
     },
     addOrUpdateProduct () {
@@ -134,7 +134,7 @@ export default {
             this.productModal.hide()
           })
           .catch((err) => {
-            alert(err.data.message)
+            alert(err.response.data.message)
           })
         // 編輯產品
       } else {
@@ -145,7 +145,7 @@ export default {
             this.productModal.hide()
           })
           .catch((err) => {
-            alert(err.data.message)
+            alert(err.response.data.message)
           })
       }
     },
@@ -160,7 +160,7 @@ export default {
           this.delProductModal.hide()
         })
         .catch((err) => {
-          alert(err.data.message)
+          alert(err.response.data.message)
         })
     },
     // 如果一開始建立產品沒有給圖時，產品資料會沒有 imagesUrl 屬性，需要額外新增才可以新增多圖

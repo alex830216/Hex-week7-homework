@@ -56,8 +56,8 @@ export default {
           // 轉址到後台產品頁面
           this.$router.push('/admin/products')
         })
-        .catch(err => {
-          alert(err.data.message)
+        .catch((err) => {
+          alert(err.response.data.message)
         })
     }
   }

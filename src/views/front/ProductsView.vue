@@ -51,7 +51,7 @@ export default {
       this.$http
         .post(`${VITE_URL}/v2/api/${VITE_PATH}/cart`, { data })
         .then((res) => {
-          console.log(res)
+          alert(res.data.message)
         })
     }
   },
