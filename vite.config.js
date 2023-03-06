@@ -12,7 +12,7 @@ export default defineConfig({
     })
   ],
   // github 資料夾
-  // base: '/week6-deploy/',
+  base: '/Hex-week7-homework/',
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
