@@ -52,10 +52,10 @@
         </tr>
       </tbody>
     </table>
-    <!-- <PaginationComponent
+    <PaginationComponent
       :pages="page"
       @change-page="getProducts">
-    </PaginationComponent> -->
+    </PaginationComponent>
     <!-- Modal -->
     <div id="orderModal" ref="orderModal" class="modal fade" tabindex="-1" aria-labelledby="orderModalLabel"
       aria-hidden="true">
@@ -79,7 +79,7 @@
 import Modal from 'bootstrap/js/dist/modal'
 import OrderModal from '@/components/OrderModal.vue'
 import DelOrderModal from '@/components/DelOrderModal.vue'
-// import PaginationComponent from '@/components/PaginationComponent.vue'
+import PaginationComponent from '@/components/PaginationComponent.vue'
 
 const { VITE_URL, VITE_PATH } = import.meta.env
 
@@ -144,7 +144,8 @@ export default {
   },
   components: {
     OrderModal,
-    DelOrderModal
+    DelOrderModal,
+    PaginationComponent
   },
   mounted () {
     this.checkLogin()
