@@ -52,13 +52,13 @@
     <!-- props -->
     <!-- <pagination
       :pages="page"
-      :get-products="getData"
+      :get-products="getProducts"
       >
     </pagination> -->
     <!-- emit -->
     <PaginationComponent
       :pages="page"
-      @change-page="getData">
+      @change-page="getProducts">
     </PaginationComponent>
     <!-- Modal -->
     <div id="productModal" ref="productModal" class="modal fade" tabindex="-1" aria-labelledby="productModalLabel"
@@ -89,6 +89,9 @@ import DelProductModal from '@/components/DelProductModal.vue'
 const { VITE_URL, VITE_PATH } = import.meta.env
 
 export default {
+  props: [
+    'checkLogin'
+  ],
   data () {
     return {
       products: [],
@@ -103,20 +106,7 @@ export default {
     }
   },
   methods: {
-    checkUser () {
-      this.$http
-        .post(`${VITE_URL}v2/api/user/check`)
-        .then(() => {
-          // 登入後可以取得產品資料
-          this.getData()
-        })
-        .catch((err) => {
-          // 若沒登入成功會跳出錯誤訊息並轉址到登入頁面
-          alert(err.data.message)
-          window.location = 'login.html'
-        })
-    },
-    getData (page = 1) {
+    getProducts (page = 1) {
       this.$http
         .get(`${VITE_URL}v2/api/${VITE_PATH}/admin/products?page=${page}`)
         .then((res) => {
@@ -127,10 +117,6 @@ export default {
         .catch((err) => {
           alert(err.data.message)
         })
-    },
-    viewProduct (product) {
-      // 將點擊到的產品存到暫存產品區
-      this.tempProduct = product
     },
     addOrUpdateProduct () {
       let url = `${VITE_URL}v2/api/${VITE_PATH}/admin/product`
@@ -144,7 +130,7 @@ export default {
         this.$http[method](url, { data: this.tempProduct })
           .then((res) => {
             alert(res.data.message)
-            this.getData()
+            this.getProducts()
             this.productModal.hide()
           })
           .catch((err) => {
@@ -155,7 +141,7 @@ export default {
         this.$http[method](url, { data: this.tempProduct })
           .then((res) => {
             alert(res.data.message)
-            this.getData()
+            this.getProducts()
             this.productModal.hide()
           })
           .catch((err) => {
@@ -170,18 +156,17 @@ export default {
         .delete(url, { data: this.tempProduct })
         .then((res) => {
           alert(res.data.message)
-          this.getData()
+          this.getProducts()
           this.delProductModal.hide()
         })
         .catch((err) => {
           alert(err.data.message)
         })
     },
-    // 當該產品資料沒有屬性 imagesUrl 時，可以新增多圖
+    // 如果一開始建立產品沒有給圖時，產品資料會沒有 imagesUrl 屬性，需要額外新增才可以新增多圖
     createImages () {
       this.tempProduct.imagesUrl = []
       this.tempProduct.imagesUrl.push('')
-      console.log('aaa')
     },
     openModal (status, product) {
       if (status === 'create') {
@@ -207,20 +192,9 @@ export default {
   },
   // 一開始進入頁面就做
   mounted () {
-    // 從 cookie 取回 token
-    const token = document.cookie.replace(
-      /(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/,
-      '$1'
-    )
-    // 往後發送 axios 時，預設將 token 放入 axios 的 headers，打 api 時就不用一直輸入 token
-    this.$http.defaults.headers.common.Authorization = token
-    // 確認是否登入
-    this.checkUser()
-    // 建立 bootstrap JS Modal 實體:有兩種建立方式
-    // https://getbootstrap.com/docs/5.2/components/modal/#via-javascript
-    // const myModal = new bootstrap.Modal(document.getElementById('myModal'), options)
-    // or
-    // const myModalAlternative = new bootstrap.Modal("#myModal", options);
+    this.checkLogin()
+    this.getProducts()
+    // 建立 bootstrap JS Modal 實體，用 ref 取代 id
     this.productModal = new Modal(this.$refs.productModal)
     this.delProductModal = new Modal(this.$refs.delProductModal)
   }

@@ -5,7 +5,7 @@
   <router-link to="/admin/products">產品列表</router-link> |
   <router-link to="/">回前台</router-link> |
   <a href="#" @click.prevent="logout">登出</a>
-  <routerView></routerView>
+  <routerView :check-login="checkLogin"></routerView>
 </template>
 
 <script>

@@ -7,8 +7,9 @@ import App from './App.vue'
 import router from './router'
 
 import './assets/all.scss'
-
+import { currency, date } from './methods/filters'
 const app = createApp(App)
+app.config.globalProperties.$filters = { currency, date }
 
 app.use(VueAxios, axios)
 
